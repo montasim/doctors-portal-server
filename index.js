@@ -29,11 +29,13 @@ async function run() {
         });
 
         app.get('/available', async (req, res) => {
-            const date = req.query.date || 'May 11, 2022';
+            const date = req.query.date || 'May 14, 2022';
 
             const availableAppointments = await availableAppointmentsCollection.find().toArray();
+            const query = { date: date };
+            const booking = await bookedAppointmentsCollection.find(query).toArray();
 
-            res.send(availableAppointments);
+            res.send(booking);
         });
 
         app.post('/bookAppointment', async (req, res) => {
