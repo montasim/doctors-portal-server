@@ -18,6 +18,7 @@ async function run() {
     try {
         await client.connect();
         const availableAppointmentsCollection = client.db('doctors_portal').collection('availableAppointments');
+        const bookedAppointmentsCollection = client.db('doctors_portal').collection('bookedAppointments');
 
         app.get('/availableAppointments', async (req, res) => {
             const query = {};
@@ -25,6 +26,12 @@ async function run() {
             const availableAppointments = await cursor.toArray();
 
             res.send(availableAppointments);
+        });
+
+        app.post('/bookAppointment', async (req, res) => {
+            const bookingData = req.body;
+            const result = bookedAppointmentsCollection.insertOne(bookingData);
+            res.send(result);
         })
     }
     finally {
