@@ -28,6 +28,14 @@ async function run() {
             res.send(availableAppointments);
         });
 
+        app.get('/available', async (req, res) => {
+            const date = req.query.date || 'May 11, 2022';
+
+            const availableAppointments = await availableAppointmentsCollection.find().toArray();
+
+            res.send(availableAppointments);
+        });
+
         app.post('/bookAppointment', async (req, res) => {
             const bookingData = req.body;
             const query = { treatment: bookingData.treatment, date: bookingData.date, patientName: bookingData.patientName };
@@ -39,7 +47,7 @@ async function run() {
             }
             const result = bookedAppointmentsCollection.insertOne(bookingData);
             return res.send({ success: true, result });
-        })
+        });
     }
     finally {
 
