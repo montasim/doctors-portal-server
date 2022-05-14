@@ -33,9 +33,17 @@ async function run() {
 
             const availableAppointments = await availableAppointmentsCollection.find().toArray();
             const query = { date: date };
-            const booking = await bookedAppointmentsCollection.find(query).toArray();
+            const bookings = await bookedAppointmentsCollection.find(query).toArray();
 
-            res.send(booking);
+            availableAppointments.forEach(appointment => {
+                const appointmentBooking = bookings.filter(b => b.treatment === appointment.name);
+                const booked = appointmentBooking.map(a => a.slot);
+                const available = appointment.slots.filter(a => !booked.includes(a));
+                appointment.available = available;
+                // appointment.booked = appointmentBooking.map(a => a.slot);
+            });
+
+            res.send(availableAppointments);
         });
 
         app.post('/bookAppointment', async (req, res) => {
