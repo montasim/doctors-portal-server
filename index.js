@@ -101,10 +101,16 @@ async function run() {
 
         app.get('/booking', verifyJWT, async (req, res) => {
             const patient = req.query.patient;
-            const authorization = req.headers.authorization;
-            const query = { patient: patient };
-            const bookings = await bookingCollection.find(query).toArray();
-            res.send(bookings);
+            const decodedEmail = req.decoded.email;
+
+            if (patient === decodedEmail) {
+                const query = { patient: patient };
+                const bookings = await bookingCollection.find(query).toArray();
+                res.send(bookings);
+            }
+            else {
+                return res.status(403).send({ message: 'Forbidden access' });
+            }
         })
 
         app.post('/booking', async (req, res) => {
