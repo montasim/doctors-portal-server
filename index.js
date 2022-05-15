@@ -37,9 +37,8 @@ async function run() {
                 $set: user,
             };
             const result = await userCollection.updateOne(filter, updateDoc, options);
-
             res.send(result);
-        });
+        })
 
         // Warning: This is not the proper way to query multiple collection. 
         // After learning more about mongodb. use aggregate, lookup, pipeline, match, group
