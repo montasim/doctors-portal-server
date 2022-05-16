@@ -8,12 +8,9 @@ const res = require('express/lib/response');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
-    .AllowCredentials()
-);
+app.use(cors({
+    origin: 'https://doctors-portal-606a5.web.app'
+}));
 app.use(express.json());
 
 
